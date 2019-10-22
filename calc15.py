@@ -1,7 +1,9 @@
 #! /usr/bin/env python
 # coding: utf
 
-print("Super Calc")
+print('{}{}'.format("Super Calc".title().center(40, '='), '\n'))
+
+print("_"*40)
 
 # Program make a simple calculator that can add, subtract, multiply and divide using functions
 
@@ -37,14 +39,15 @@ def idivide(x, y):
     return x // y
 
 def menu():
-    print("Select operation.")
-    print("+.Add")
-    print("-.Subtract")
-    print("*.Multiply")
-    print("/.Divide")
-    print("//.Int Divide")
-    print("%.Modulo Divide")
-    return input("Enter choice(+|-|*|/|//|%):")
+    print('{!s}'.format("| Select operation:".title()+" "*20+'|'))
+    print('{}'.format("|"+" "*10 + "+ : add".swapcase().rjust(15, ' ') +" "*13 + "|"))
+    print('{}'.format("|"+" "*10 + "- : Subtract".capitalize().rjust(20, ' ') +" "*8 + "|"))
+    print('{}'.format("|"+" "*10 + "* : Multiply".lower().rjust(20, ' ') +" "*8 + "|"))
+    print('{}'.format("|"+" "*10 + "/ : Divide".title().rjust(18, ' ') +" "*10 + "|"))
+    print('{}'.format("|"+" "*10 + "//: Int Divide".upper().rjust(22, ' ') +" "*6 + "|"))
+    print('{}'.format("|"+" "*10 + "% : Modulo Divide".capitalize().swapcase().rjust(25, ' ') +" "*3 + "|"))
+    print('|'+"_"*38+'|')
+    return input('{}'.format("\nEnter some like 2 + 2 or q/h : "))
 
 def calcHelp():
     print ("""
@@ -58,39 +61,43 @@ def calcHelp():
             '%'                        Nodulo Divide
             'q'                        Quit
         """)
+
 while True:
     # Store the user input an operator
-    operator = menu()
-
+    formula = menu()
+    
+    x, operator, y = formula.split(" ", 3)
+        
     if operator == 'q':
-        print('Thankyou for using calculator.py!')
+        # print('{!r}'.format('Thank You for using calculator.py!'))
+        print('{!s}'.format('Thank You for using calculator.py!'))
         break # это останавливает цикл while
     
     if operator == 'h':
         calcHelp()
         continue
+        
+    # formula = input("Enter formula: ")
     
     # Convert strings into floats
-    a = float(input("Enter a: "))
-    b = float(input("Enter b: "))
+    a = float(x)
+    b = float(y)
 
     if operator == "+":
-        print("a + b = ", add(a, b))
+        print ("{:+08.2f} + {:+08.2f} = {:+08.2f}".format(a, b, add(a, b)))
     elif operator == '-':
-        print("a - b = ", subtract(a, b))
-    elif operator == '*':
-        print("a * b = ", multiply(a, b))
-
-    # Краткая запись мат. операций и присваивания
+        print ("{:+08.2f} - {:+08.2f} = {:+08.2f}".format(a, b, subtract(a, b)))
+    elif operator == "*":
+        print ("{0} * {k} = {1}".format(a, multiply(a, b), k=b))
     elif (operator == "/" or operator == "//" or operator == "%" ) and b==0:
         print("Oops, division or modulo by zero")
     elif operator == "//" and b !=0:
-        print("a // b = ", int(idivide(a, b)))
+        print("a // b = ", idivide(a, b))
     elif operator == "%" and b !=0:
-        print("a % b = ", int(modulo(a, b)))
+        print("a % b = ", modulo(a, b))
     elif operator == "/" and b !=0:
-        print("a / b = ", divide(a, b))
-   
+        print("{} {:+08.2f}".format("a / b = ", divide(a, b)))
+
     # If none of the above conditions were true then execute this by default
     else:
-        calcHelp()
+        print("Use either + - * / or % next time")

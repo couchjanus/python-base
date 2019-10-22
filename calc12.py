@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # coding: utf
 
-print("Super Calc")
+print('{!s:=^40}'.format("Super Calc"))
 
 # Program make a simple calculator that can add, subtract, multiply and divide using functions
 
@@ -37,60 +37,50 @@ def idivide(x, y):
     return x // y
 
 def menu():
-    print("Select operation.")
-    print("+.Add")
-    print("-.Subtract")
-    print("*.Multiply")
-    print("/.Divide")
-    print("//.Int Divide")
-    print("%.Modulo Divide")
-    return input("Enter choice(+|-|*|/|//|%):")
+    print('{!r:~^40}'.format("Select operation."))
+    print('{!r:~^40}'.format("+.Add"))
+    print('{!r:~^40}'.format("-.Subtract"))
+    print('{!r:~^40}'.format("*.Multiply"))
+    print('{!r:~^40}'.format("/.Divide"))
+    print('{!r:~^40}'.format("//.Int Divide"))
+    print('{!r:~^40}'.format("%.Modulo Divide"))
+    return input('{!r:~^40}'.format("Enter choice(+|-|*|/|//|%):"))
 
-def calcHelp():
-    print ("""
-        Usage operation:
-            'h'                        Display this usage message
-            '+'                        Add
-            '-'                        Subtract
-            '*'                        Multiply
-            '/'                        Divide
-            '//'                       Imt Divide
-            '%'                        Nodulo Divide
-            'q'                        Quit
-        """)
 while True:
     # Store the user input an operator
     operator = menu()
 
     if operator == 'q':
-        print('Thankyou for using calculator.py!')
+        # print('{!r}'.format('Thank You for using calculator.py!'))
+        print('{!s}'.format('Thank You for using calculator.py!'))
         break # это останавливает цикл while
-    
-    if operator == 'h':
-        calcHelp()
-        continue
     
     # Convert strings into floats
     a = float(input("Enter a: "))
     b = float(input("Enter b: "))
 
     if operator == "+":
-        print("a + b = ", add(a, b))
+        print ("{:+08.2f} + {:+08.2f} = {:+08.2f}".format(a, b, add(a, b)))
     elif operator == '-':
-        print("a - b = ", subtract(a, b))
-    elif operator == '*':
-        print("a * b = ", multiply(a, b))
-
+        print ("{:+08.2f} - {:+08.2f} = {:+08.2f}".format(a, b, subtract(a, b)))
+    elif operator == "*":
+        print ("{0} * {k} = {1}".format(a, multiply(a, b), k=b))
+    # elif operator == '*':
+    #     print ("{:+08.2f} * {:+08.2f} = {:+08.2f}".format(a, b, multiply(a, b)))
     # Краткая запись мат. операций и присваивания
     elif (operator == "/" or operator == "//" or operator == "%" ) and b==0:
         print("Oops, division or modulo by zero")
     elif operator == "//" and b !=0:
-        print("a // b = ", int(idivide(a, b)))
+        # print("a // b = %d" % idivide(a, b))
+        print("%f // %f = %d" % (a, b, idivide(a, b)))
     elif operator == "%" and b !=0:
-        print("a % b = ", int(modulo(a, b)))
+        # print("a % b = ", modulo(a, b))
+        print("%d %s %d = %d" % (a, operator, b, idivide(a, b)))
     elif operator == "/" and b !=0:
-        print("a / b = ", divide(a, b))
-   
+        # print("{} {:+08.2f}".format("a / b = ", divide(a, b)))
+        print("%8.2f %s %8.2f = %8.2f" % (a, operator, b, divide(a, b)))
+
     # If none of the above conditions were true then execute this by default
     else:
-        calcHelp()
+        print("Use either + - * / or % next time")
+

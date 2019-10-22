@@ -46,18 +46,6 @@ def menu():
     print("%.Modulo Divide")
     return input("Enter choice(+|-|*|/|//|%):")
 
-def calcHelp():
-    print ("""
-        Usage operation:
-            'h'                        Display this usage message
-            '+'                        Add
-            '-'                        Subtract
-            '*'                        Multiply
-            '/'                        Divide
-            '//'                       Imt Divide
-            '%'                        Nodulo Divide
-            'q'                        Quit
-        """)
 while True:
     # Store the user input an operator
     operator = menu()
@@ -65,10 +53,6 @@ while True:
     if operator == 'q':
         print('Thankyou for using calculator.py!')
         break # это останавливает цикл while
-    
-    if operator == 'h':
-        calcHelp()
-        continue
     
     # Convert strings into floats
     a = float(input("Enter a: "))
@@ -80,17 +64,16 @@ while True:
         print("a - b = ", subtract(a, b))
     elif operator == '*':
         print("a * b = ", multiply(a, b))
-
     # Краткая запись мат. операций и присваивания
     elif (operator == "/" or operator == "//" or operator == "%" ) and b==0:
         print("Oops, division or modulo by zero")
     elif operator == "//" and b !=0:
-        print("a // b = ", int(idivide(a, b)))
+        print("a // b = ", idivide(a, b))
     elif operator == "%" and b !=0:
-        print("a % b = ", int(modulo(a, b)))
+        print("a % b = ", modulo(a, b))
     elif operator == "/" and b !=0:
         print("a / b = ", divide(a, b))
-   
+
     # If none of the above conditions were true then execute this by default
     else:
-        calcHelp()
+        print("Use either + - * / or % next time")
