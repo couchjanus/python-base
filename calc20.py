@@ -37,6 +37,8 @@ def idivide(x, y):
 
     return x // y
 
+ops = ('+','-','*','/','//','%','**')
+
 def menu():
     print("_"*40)
     print('{!s}'.format("| Available operators:".title()+" "*17+'|'))
@@ -48,6 +50,10 @@ def menu():
     print('{}'.format("|"+" "*10 + "% : Modulo Divide".capitalize().swapcase().rjust(25, ' ') +" "*3 + "|"))
     print('|'+"_"*38+'|')
     return input('{}'.format("\nEnter something like 2 + 2 or q or h : "))
+    # choice = input("| Enter choice(h|c|q):".title())
+    # return str(choice) if choice != '' else 'h'
+
+
 
 def calcHelp(e=''):
     print(f"\n{e}") if e != '' else print()
@@ -65,6 +71,7 @@ def calcHelp(e=''):
 
 def result(a, b, operator):
     """This function return result"""
+
     r = False
     error = ''
     if operator == "+":
@@ -85,37 +92,34 @@ def result(a, b, operator):
         error = "Use either + - * / or % next time"
     return r, error
 
-
 while True:
-    ops = ('+','-','*','/','//','%','**')
+    choice = menu()
 
-    formula = menu()
-   
-    fields = formula.split(" ")
-
-    if len(fields) != 3:
-        operator = fields[0]
-    else:
-        a = float(fields[0])
-        operator = fields[1]
-        b = float(fields[2])
-    
-    if operator == 'q':
+    if choice == 'q':
         print('{!s}'.format('Thank You for using calculator.py!'))
         break 
     
-    if operator == 'h':
+    if choice == 'h':
         calcHelp()
         continue
-
-    if operator not in ('+','-','*','/','//','%','**'):
+    
+    for o in ops:
+        index = choice.find(o)
+        if index != -1:
+            operator = o
+            x,y = choice.split(o)
+            x = x.strip()
+            y = y.strip()
+   
+    if operator not in ops:
         calcHelp()
         continue
+    
+    a = float(x)
+    b = float(y)
     
     res, err = result(a, b, operator)
-    
-    if err != '':
-        calcHelp(err)
-        continue
+    if res != False:
+        print(f"{a} {operator} {b} = {res}")
     else:
-        print (f"{a} {operator} {b} = {res}")
+        print(f"{err}")

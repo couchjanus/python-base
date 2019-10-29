@@ -37,17 +37,29 @@ def idivide(x, y):
 
     return x // y
 
+ops = ('+','-','*','/','//','%','**')
+
 def menu():
-    print("_"*40)
-    print('{!s}'.format("| Available operators:".title()+" "*17+'|'))
-    print('{}'.format("|"+" "*10 + "+ : add".swapcase().rjust(15, ' ') +" "*13 + "|"))
-    print('{}'.format("|"+" "*10 + "- : Subtract".capitalize().rjust(20, ' ') +" "*8 + "|"))
-    print('{}'.format("|"+" "*10 + "* : Multiply".lower().rjust(20, ' ') +" "*8 + "|"))
-    print('{}'.format("|"+" "*10 + "/ : Divide".title().rjust(18, ' ') +" "*10 + "|"))
-    print('{}'.format("|"+" "*10 + "//: Int Divide".upper().rjust(22, ' ') +" "*6 + "|"))
-    print('{}'.format("|"+" "*10 + "% : Modulo Divide".capitalize().swapcase().rjust(25, ' ') +" "*3 + "|"))
-    print('|'+"_"*38+'|')
-    return input('{}'.format("\nEnter something like 2 + 2 or q or h : "))
+    print(f"{title}".title().center(30, '='), '\n')
+    print("_"*30)
+    str1 = 'Select operation:'
+    print('|'+str1+' '*(28-len(str1))+'|')
+    print('|'+"_"*28+'|')
+    print("| c : Calculate".ljust(29,' ')+'|')
+    print("| h : Help".ljust(29,' ')+'|')
+    print("| q : Quit".ljust(29,' ')+'|')
+    print("="*30)
+
+    choice = input("| Enter choice(h|c|q):".title())
+    return str(choice) if choice != '' else 'h'
+
+def extacts(entry, o):
+    index = entry.find(o)
+    if index != -1:
+        a,b = entry.split(o)
+        a = a.strip()
+        b = b.strip()
+    return (a,b,o)
 
 def calcHelp(e=''):
     print(f"\n{e}") if e != '' else print()
@@ -65,6 +77,7 @@ def calcHelp(e=''):
 
 def result(a, b, operator):
     """This function return result"""
+
     r = False
     error = ''
     if operator == "+":
@@ -86,8 +99,6 @@ def result(a, b, operator):
     return r, error
 
 while True:
-    ops = ('+','-','*','/','//','%','**')
-
     choice = menu()
 
     if choice == 'q':
@@ -98,25 +109,24 @@ while True:
         calcHelp()
         continue
 
-    for o in ops:
-        index = choice.find(o)
-        if index != -1:
-            operator = o
-            x,y = choice.split(o)
-            x = x.strip()
-            y = y.strip()
-   
-    if operator not in ('+','-','*','/','//','%','**'):
-        calcHelp()
-        continue
+    if choice == 'c':
+        entry = input("Enter x operator y: ")
     
-    a = float(x)
-    b = float(y)
-    
-    res, err = result(a, b, operator)
-    
-    if err != '':
-        calcHelp(err)
-        continue
-    else:
-        print (f"{a} {operator} {b} = {res}")
+        for o in ops:
+            if entry.count(o) == 1:
+                x,y,operator = extacts(entry,o)
+            if entry.count(o) == 2:
+                x,y,operator = extacts(entry,2*o)
+
+        if operator not in ops:
+            calcHelp()
+            continue
+        
+        a = float(x)
+        b = float(y)
+        
+        res, err = result(a, b, operator)
+        if res != False:
+            print(f"{a} {operator} {b} = {res}")
+        else:
+            print(f"{err}")
