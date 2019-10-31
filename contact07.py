@@ -1,4 +1,4 @@
-#Contact attributes:
+# Contact attributes:
 # id
 # name
 # phone_number
