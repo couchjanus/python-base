@@ -1,43 +1,29 @@
 #! /usr/bin/env python
 # coding: utf
+# calc22.py
 
 title = "Super Calc" 
 print(f"{title}".title().center(40, '='), '\n')
 
-# Program make a simple calculator that can add, subtract, multiply and divide using functions
-
-# define functions
-def add(x, y):
-    """This function adds two numbers"""
-
-    return x + y
-
-def subtract(x, y):
-    """This function subtracts two numbers"""
-
-    return x - y
-
-def multiply(x, y):
-    """This function multiplies two numbers"""
-
-    return x * y
-
-def divide(x, y):
-    """This function divides two numbers"""
-
-    return x / y
-
-def modulo(x, y):
-    """This function divides by modulo two numbers"""
-
-    return x % y
-
-def idivide(x, y):
-    """This function int divides two numbers"""
-
-    return x // y
-
 ops = ('+','-','*','/','//','%','**')
+
+choices = ("Help",'Calculate',"Quit")
+
+def printMenu(w, j, obj):
+    gup = (': ', '| ')
+
+    print("_"*(w+7))
+    print(gup[1] + titles[j].ljust(w+3, ' ') + gup[1][::-1])
+
+    for item in obj:
+        print(
+            gup[1] + item[0].lower() + gup[0] +
+            item.ljust(w, ' ') + gup[1][:: -1]
+            )
+
+    print("="*(w+7))
+
+
 
 def menu():
     print(f"{title}".title().center(30, '='), '\n')
@@ -81,22 +67,22 @@ def result(a, b, operator):
     r = False
     error = ''
     if operator == "+":
-        r = add(a, b)
+        r = lambda a, b: a + b
     elif operator == '-':
-        r = subtract(a, b)
+        r = lambda a, b: a - b
     elif operator == "*":
-        r = multiply(a, b)
+        r = lambda a, b: a * b
     elif (operator == "/" or operator == "//" or operator == "%" ) and b==0:
         error = "Oops, division or modulo by zero"
     elif operator == "//" and b !=0:
-        r = idivide(a, b)
+        r = lambda a, b: a // b
     elif operator == "%" and b !=0:
-        r = modulo(a, b)
+        r = lambda a, b: a % b
     elif operator == "/" and b !=0:
-        r = divide(a, b)
+        r = lambda a, b: a / b
     else:
         error = "Use either + - * / or % next time"
-    return r, error
+    return r(a, b), error
 
 while True:
     choice = menu()
@@ -111,11 +97,11 @@ while True:
 
     if choice == 'c':
         entry = input("Enter x operator y: ")
-    
         for o in ops:
             if entry.count(o) == 1:
                 x,y,operator = extacts(entry,o)
             if entry.count(o) == 2:
+                print(o)
                 x,y,operator = extacts(entry,2*o)
 
         if operator not in ops:

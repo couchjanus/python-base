@@ -1,7 +1,15 @@
+# -*- coding: utf-8 -*-
+# contact19.py
+
 '''
  Program make a simple phonegup that can add,
  view, modify, delete and save the records
 '''
+
+import pickle
+ 
+FILENAME = "contacts.dat"
+
 titles = (
     'Select operation:',
     "Usage operation:"
@@ -29,16 +37,10 @@ helpers = (
     'Exit programm'
     )
 
-# Contact attributes:
-# id
-# name
-# phone
-# favorite
-# address
-# age
-# note
-# date
-# time
+lookup = (
+    "first_name", 
+    "last_name", 
+)
 
 # Importing libraries
 from datetime import datetime, timedelta
@@ -56,55 +58,10 @@ def current_date():
     second = now.second
     return [f'{day}/{month}/{year}', f'{hour}:{minute}:{second}']
 
-
-# Dict contacts
-
-contacts = {
-    0: {
-        "id": 0,
-        "name": 'John Doe', 
-        "phone": 2134567, 
-        "favorite": 10, 
-        "address": 'Kyiv City, 1, Some Square', 
-        "age": 22,
-        "note": 'an anonymous party, typically the plaintiff, in a legal action', 
-        "date": '24/10/2019', 
-        "time": '15:38:31'   
-    },
-    1: {
-        "id": 1,
-        "name": 'Mary Ann', 
-        "phone": 1234567, 
-        "favorite": 30, 
-        "address": 'Kyiv City, 121, Some Strit', 
-        "age": 19,
-        "note": 'Pretty Girl', 
-        "date": '24/10/2019', 
-        "time": '15:10:31'   
-    },
-    2: {
-        "id": 2,
-        "name": 'Anna Lisa', 
-        "phone": 9234567, 
-        "favorite": 3, 
-        "address": 'Kyiv City, 11, Some Strit', 
-        "age": 25,
-        "note": 'Another Pretty Girl', 
-        "date": '24/10/2019',
-        "time": '15:40:31'
-    }
-}
-
-def print_contacts(contacts):
-    print("All Contacts in PhoneBook:")
-    for id in contacts:
-        print("Id:\t", id, "\t", "Name:\t", contacts[id]['name'], "\t", "Number:\t", contacts[id]['phone'])
-    print
-
-def add_contact(name, phone, address, age, note):
+def add_contact(first_name, last_name, phone, address, age, note):
     d = {
-        'id': len(contacts),
-        'name': name,
+        "first_name": first_name, 
+        "last_name": last_name, 
         'phone': phone,
         'address': address,
         "favorite": 1, 
@@ -112,10 +69,39 @@ def add_contact(name, phone, address, age, note):
         "note": note, 
         "date": current_date()[0],
         "time": current_date()[1]
-        }
+    }
+    return d
 
-    contacts.update({len(contacts): d})
+data = []
 
+full_name = lambda first_name, last_name: first_name.title() +" " + last_name.title()
+
+format_cell = lambda cell: [t.title() for t in cell.split("_")]
+
+# with open(FILENAME, "rb") as file:
+#     try:
+#         while True:
+#             data.append(pickle.load(file))
+#     except EOFError:
+#         pass
+#     print('\n\t')
+
+#     print('\n'.join(['\t'.join([' '.join(format_cell(cell)) + ": " + str(contact[cell]) + "\n" for cell in contact]) for contact in data]))
+
+
+# with open(FILENAME, "rb") as file:
+#     data = pickle.load(file)
+#     cnt = 0
+#     for item in data:
+#         print('The data ', cnt, ' is : ', item)
+#         cnt += 1
+#     print(cnt)
+
+def print_contacts(contacts):
+    print("All Contacts in PhoneBook:")
+    for id in contacts:
+        print("Id:\t", id, "\t", "Firest Name:\t", contacts[id]['first_name'], "\t", "Last Name:\t", contacts[id]['last_name'], "\t", "Number:\t", contacts[id]['phone'])
+    print
 
 def printMenu(w, j, obj):
     gup = (': ', '| ')
@@ -131,21 +117,6 @@ def printMenu(w, j, obj):
 
     print("="*(w+7))
 
-def del_contact(id):
-    # del contacts[id] # remove contacts[id]
-    # проверка наличия ключа
-    if id in contacts:
-        del contacts[id] # remove contacts[id]
-
-def pop_contact(id):
-    # проверка наличия ключа
-    if id in contacts:
-        return contacts.pop(id) # pop contacts[id]
-    # return contacts.pop(id) # pop contacts[id]
-
-def clear_contacts():
-    contacts.clear()
-
 def menu():
     tupleLen = [len(i) for i in choices]
     width = max(max(tupleLen), len(titles[0]))
@@ -159,7 +130,6 @@ def menu():
     choice = input("Enter choice "+choiceList+':>')
     return str(choice) if choice != '' else 'h'
 
-
 def myhelp():
     list1 = list()
     for i in range(len(helpers)):
@@ -168,11 +138,9 @@ def myhelp():
     listLen = [len(i) for i in list1]
     printMenu(max(listLen), 1, list1)
 
-# gup = (': ', '| ')
-# print(gup[1][:: -1]) # |
 
 while True:
-
+ 
     choice = menu()
 
     if choice == 'q':
@@ -181,30 +149,48 @@ while True:
     if choice == 'h':
         myhelp()
         continue
+
     if choice == 'p':
-        print_contacts(contacts)
+        with open(FILENAME, "rb") as file:
+            try:
+                while True:
+                    data.append(pickle.load(file))
+            except EOFError:
+                pass
+            for contact in data:
+                print("Имя:", full_name(contact['first_name'], contact['last_name']), "\tВозраст:", contact["age"], "\tPhone:", contact["phone"])
+
     elif choice == 'a':
         print("Add New Record To PhoneBook")
-        print("Add New Record To PhoneBook")
-        name = input("First Name: ")
-        phone = int(input("Phone Number: "))
+        first_name = input("First Name: ")
+        last_name = input("Last Name: ") 
+        phone = input("Phone Number: ")
         address = input("Address: ")
-        age = int(input("Age: "))
+        age = input("Age: ")
         note = input("Note: ")
 
-        add_contact(name, phone, address, age, note)
+        with open(FILENAME, "ab") as file:
+            pickle.dump(add_contact(first_name, last_name, phone, address, age, note), file)
+
     elif choice == 'r':
         print("Choice Record Id To Remove")
         print_contacts(contacts)
         id = int(input("Record Id: "))
         remove_contact = pop_contact(id)
         print(f'Record {remove_contact} Removed Successfully!')
+
     elif choice == 'c':
         clear_contacts()
         print(f'All Records Removed Successfully!')
         print_contacts(contacts)
 
+    elif choice == 'l':
+        look = look_contact()
+        if look == 'h':
+            print('Use f for First Name or l for Last Name')
+        else:
+            print_contact(look)
+
     else:
         myhelp()
         continue
-
