@@ -1,0 +1,44 @@
+#:kivy 1.11.1
+
+<Screen>:
+    canvas:
+        Color:
+            rgb: .2, .2, .2
+        Rectangle:
+            size: self.size
+
+<Projects>:
+
+    BoxLayout:
+
+        orientation: 'vertical'
+
+        BoxLayout:
+
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: '48dp'
+            padding: '5dp'
+
+            canvas:
+                Color:
+                    rgb: .3, .3, .3
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Image:
+                source: 'data/icon.png'
+                mipmap: True
+                size_hint_x: None
+                width: self.height
+
+            Label:
+                text: 'Projects'
+                font_size: '16sp'
+
+            Button:
+                text: '+'
+                size_hint_x: None
+                width: self.height
+                on_release: app.add_project()

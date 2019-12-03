@@ -2,7 +2,8 @@
 
 -- Projects are high-level activities made up of tasks
 create table project (
-    name        text primary key,
+    index       integer primary key,
+    name        text,
     description text,
     deadline    date
 );
@@ -15,6 +16,6 @@ create table task (
     status       text,
     deadline     date,
     completed_on date,
-    project      text not null references project(name)
+    index        integer not null references project(index)
 );
 
