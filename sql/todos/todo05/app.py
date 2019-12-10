@@ -39,7 +39,7 @@ class App(Tk):
     """
     The main tktiner app window
     """
-    def __init__(self, filename):
+    def __init__(self):
         """
         Constructor method
         requires filename/path of the database
@@ -55,7 +55,7 @@ class App(Tk):
         self.button_width = 12
         self.button_height = 1
 
-        self.__database = Database(filename)
+        self.__database = Database('employees.db')
 
         self.todolist = TodoList(self)
         self.todolist.load_data(self.__database.get_all_tasks())
